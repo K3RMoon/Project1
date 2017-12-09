@@ -8,7 +8,7 @@ import helperObjects.SLLQueue;
 
 public class PatApproach implements Approach 
 {
-	private float profit;
+	private double profit;
 	private int disCustomers;
 	private Queue<Customer> inputQueue;
 	private Queue<Customer> processingQueue;
@@ -26,14 +26,48 @@ public class PatApproach implements Approach
 	@Override
 	public void run()
 	{
-		//TODO: Implement PAT
+		int counter = 1;
+		int orderCounter = 0;
+
+		while(!inputQueue.isEmpty()||!processingQueue.isEmpty())
+        {
+            while(!inputQueue.isEmpty()&&inputQueue.first().getMomentOfArrival()==counter)
+            {
+                processingQueue.enqueue(inputQueue.dequeue());
+            }
+
+            int currentLineSize = processingQueue.size();
+
+            for(int i = 0; i < currentLineSize; i++)
+            {
+                processingQueue.first().setLineCounter(processingQueue.first().getLineCounter()-1);
+                if(processingQueue.first().getLineCounter() <= 0)
+                {
+                    processingQueue.dequeue();
+                    disCustomers++;
+                }
+                else
+                {
+                    processingQueue.enqueue(processingQueue.dequeue());
+                }
+            }
+            if(!processingQueue.isEmpty() && orderCounter <= 0)
+            {
+                orderCounter = processingQueue.first().getOrderTime();
+                profit = profit + processingQueue.first().getOrderCost();
+                customersServed.add(processingQueue.dequeue());
+            }
+
+            counter++;
+            orderCounter--;
+        }
 	}
 
-	public float getProfit() {
+	public double getProfit() {
 		return profit;
 	}
 
-	public void setProfit(float profit) {
+	public void setProfit(double profit) {
 		this.profit = profit;
 	}
 

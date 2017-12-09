@@ -1,9 +1,10 @@
 package approaches;
 
 import helperObjects.*;
+
 import java.util.ArrayList;
 
-public class MaxApproach implements Approach
+public class PacApproach implements Approach
 {
     private float profit;
     private int disCustomers;
@@ -12,12 +13,12 @@ public class MaxApproach implements Approach
     private PriorityQueue<Customer, Integer> processingPQ;
 
     //MAX PROFIT
-    public MaxApproach(Queue<Customer> inputQueue)
+    public PacApproach(Queue<Customer> inputQueue)
     {
         profit = 0;
         disCustomers = 0;
         customersServed = new ArrayList<Customer>();
-        processingPQ = new SortedListPriorityQueue<Customer,Integer>(new CustomerComparator1<Customer>());
+        processingPQ = new SortedListPriorityQueue<Customer,Integer>(new CustomerComparator2<Customer>());
         this.inputQueue = inputQueue;
     }
 
@@ -28,10 +29,10 @@ public class MaxApproach implements Approach
 
         while(!inputQueue.isEmpty()||!processingPQ.isEmpty()) {
 
-            while(!inputQueue.isEmpty() && inputQueue.first().getMomentOfArrival() == counter)
-            {
-                processingPQ.insert(inputQueue.dequeue(), counter);
-            }
+           while(!inputQueue.isEmpty() && inputQueue.first().getMomentOfArrival() == counter)
+           {
+               processingPQ.insert(inputQueue.dequeue(), counter);
+           }
 
             if (!processingPQ.isEmpty() && orderCounter <= 0) {
                 orderCounter = processingPQ.min().getKey().getOrderTime();
@@ -55,8 +56,6 @@ public class MaxApproach implements Approach
             for (Entry<Customer, Integer> entry : tempList) {
                 processingPQ.insert(entry.getKey(), entry.getValue());
             }
-
-
 
             counter++;
             orderCounter--;
@@ -105,6 +104,6 @@ public class MaxApproach implements Approach
 
     public String toString()
     {
-        return  "\nMax's Approach Profit: $" + profit + "\nMax's approach number of dissapointed customers: " + disCustomers;
+        return  "\nPac's Approach Profit: $" + profit + "\nPac's approach number of dissapointed customers: " + disCustomers;
     }
 }

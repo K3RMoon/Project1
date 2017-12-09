@@ -6,7 +6,7 @@ import helperObjects.*;
 
 public class MatApproach implements Approach 
 {
-	private float profit;
+	private double profit;
 	private int disCustomers;
 	private Queue<Customer> inputQueue;
 	private Stack<Customer> processingStack;
@@ -14,21 +14,67 @@ public class MatApproach implements Approach
 	
 	public MatApproach(Queue<Customer> inputQueue)
 	{
-		
+		profit = 0;
+		disCustomers = 0;
+		processingStack = new LLStack<>();
+		servedCustomers = new ArrayList<>();
+		this.inputQueue = inputQueue;
 	}
 
 	@Override
 	public void run() 
 	{
-		// TODO: Implement Mat
+	    int counter = 1;
+	    int orderCounter = 0;
+
+		while(!inputQueue.isEmpty() || !processingStack.isEmpty())
+        {
+            while(!inputQueue.isEmpty() && inputQueue.first().getMomentOfArrival() == counter)
+            {
+                processingStack.push(inputQueue.dequeue());
+            }
+
+            if(!processingStack.isEmpty() && orderCounter <= 0)
+            {
+                orderCounter = processingStack.top().getOrderTime();
+                profit += processingStack.top().getOrderCost();
+                servedCustomers.add(processingStack.pop());
+            }
+
+            int currentLineSize = processingStack.size();
+            Stack<Customer> tempStack = new LLStack<>();
+
+            for(int i=0; i<currentLineSize; i++)
+            {
+                processingStack.top().setLineCounter(processingStack.top().getLineCounter()-1);
+                if(processingStack.top().getLineCounter() <= 0)
+                {
+                    processingStack.pop();
+                    disCustomers++;
+                }
+                else
+                {
+                    tempStack.push(processingStack.pop());
+                }
+            }
+
+            while(!tempStack.isEmpty())
+            {
+                processingStack.push(tempStack.pop());
+            }
+
+
+            counter++;
+            orderCounter--;
+        }
 
 	}
 
-    public float getProfit() {
+    public double getProfit() {
         return profit;
     }
 
-    public void setProfit(float profit) {
+    public void setProfit(double profit) {
         this.profit = profit;
     }
 

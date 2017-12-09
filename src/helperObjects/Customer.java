@@ -1,15 +1,15 @@
 package helperObjects;
 
-public class Customer 
+public class Customer
 {
 	private int momentOfArrival;
 	private int customerID;
 	private int orderTime;
-	private float orderCost;
+	private double orderCost;
 	private int patienceLevel;
 	private int lineCounter;
 	
-	public Customer(int momentOfArrival, int customerID, int orderTime, float orderCost, int patienceLevel)
+	public Customer(int momentOfArrival, int customerID, int orderTime, double orderCost, int patienceLevel)
 	{
 		this.momentOfArrival=momentOfArrival;
 		this.customerID=customerID;
@@ -43,11 +43,11 @@ public class Customer
 		this.orderTime = orderTime;
 	}
 
-	public float getOrderCost() {
+	public double getOrderCost() {
 		return orderCost;
 	}
 
-	public void setOrderCost(float orderCost) {
+	public void setOrderCost(double orderCost) {
 		this.orderCost = orderCost;
 	}
 
@@ -66,6 +66,6 @@ public class Customer
 	public void setLineCounter(int lineCounter) {
 		this.lineCounter = lineCounter;
 	}
-	
+
 	
 }
