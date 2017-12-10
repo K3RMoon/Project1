@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class PacApproach implements Approach
 {
-    private float profit;
+    private double profit;
     private int disCustomers;
     private Queue<Customer> inputQueue;
     private ArrayList<Customer> customersServed;
@@ -18,27 +18,24 @@ public class PacApproach implements Approach
         profit = 0;
         disCustomers = 0;
         customersServed = new ArrayList<Customer>();
-        processingPQ = new SortedListPriorityQueue<Customer,Integer>(new CustomerComparator2<Customer>());
-        this.inputQueue = inputQueue;
+        processingPQ = new SortedListPriorityQueue<Customer,Integer>(new CustomerComparator1<Customer>());
+        this.inputQueue = new SLLQueue<>();
+        for(int i =0; i < inputQueue.size(); i++)
+        {
+            this.inputQueue.enqueue(inputQueue.first().clone());
+            inputQueue.enqueue(inputQueue.dequeue());
+        }
     }
 
     public void run()
     {
-        int counter = 1;
-        int orderCounter = 0;
+        int counter = 0;
+        int orderCounter = 1;
 
         while(!inputQueue.isEmpty()||!processingPQ.isEmpty()) {
 
-           while(!inputQueue.isEmpty() && inputQueue.first().getMomentOfArrival() == counter)
-           {
-               processingPQ.insert(inputQueue.dequeue(), counter);
-           }
-
-            if (!processingPQ.isEmpty() && orderCounter <= 0) {
-                orderCounter = processingPQ.min().getKey().getOrderTime();
-                profit += processingPQ.min().getKey().getOrderCost();
-                customersServed.add(processingPQ.removeMin().getKey());
-            }
+            counter++;
+            orderCounter--;
 
             int currentLineSize = processingPQ.size();
             ArrayList<Entry<Customer, Integer>> tempList = new ArrayList<>();
@@ -57,16 +54,26 @@ public class PacApproach implements Approach
                 processingPQ.insert(entry.getKey(), entry.getValue());
             }
 
-            counter++;
-            orderCounter--;
+            while(!inputQueue.isEmpty() && inputQueue.first().getMomentOfArrival() == counter)
+           {
+               processingPQ.insert(inputQueue.dequeue(), counter);
+           }
+
+            if (!processingPQ.isEmpty() && orderCounter <= 0) {
+                orderCounter = processingPQ.min().getKey().getOrderTime();
+                profit += processingPQ.min().getKey().getOrderCost();
+                customersServed.add(processingPQ.removeMin().getKey());
+            }
+
+
         }
     }
 
-    public float getProfit() {
+    public double getProfit() {
         return profit;
     }
 
-    public void setProfit(float profit) {
+    public void setProfit(double profit) {
         this.profit = profit;
     }
 

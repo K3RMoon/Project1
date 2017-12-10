@@ -7,5 +7,6 @@ public interface Queue<E>
 	public E dequeue();
 	public int size();
 	public boolean isEmpty();
+	public Queue<E> clone();
 	
 }

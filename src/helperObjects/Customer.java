@@ -67,5 +67,11 @@ public class Customer
 		this.lineCounter = lineCounter;
 	}
 
+	public Customer clone()
+	{
+		Customer newCus = new Customer(momentOfArrival,customerID,orderTime,orderCost,patienceLevel);
+		return newCus;
+	}
+
 	
 }

@@ -84,6 +84,16 @@ public class SLLQueue<E> implements Queue<E> {
 		size++; 
 	}
 
+	public Queue<E> clone()
+	{
+		Queue<E> clone = new SLLQueue<E>();
+		for(int i = 0; i < this.size(); i++)
+        {
+            clone.enqueue(this.first());
+            this.enqueue(this.dequeue());
+        }
 
+        return clone;
+	}
 
 }

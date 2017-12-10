@@ -20,21 +20,24 @@ public class PatApproach implements Approach
 		disCustomers=0;
 		processingQueue = new SLLQueue<Customer>();
 		customersServed = new ArrayList<Customer>();
-		this.inputQueue = inputQueue;
+		this.inputQueue = new SLLQueue<>();
+		for(int i =0; i < inputQueue.size(); i++)
+        {
+            this.inputQueue.enqueue(inputQueue.first().clone());
+            inputQueue.enqueue(inputQueue.dequeue());
+        }
 	}
 	
 	@Override
 	public void run()
 	{
-		int counter = 1;
-		int orderCounter = 0;
+		int counter = 0;
+		int orderCounter = 1;
 
 		while(!inputQueue.isEmpty()||!processingQueue.isEmpty())
         {
-            while(!inputQueue.isEmpty()&&inputQueue.first().getMomentOfArrival()==counter)
-            {
-                processingQueue.enqueue(inputQueue.dequeue());
-            }
+            counter++;
+            orderCounter--;
 
             int currentLineSize = processingQueue.size();
 
@@ -51,15 +54,21 @@ public class PatApproach implements Approach
                     processingQueue.enqueue(processingQueue.dequeue());
                 }
             }
-            if(!processingQueue.isEmpty() && orderCounter <= 0)
+
+            while(!inputQueue.isEmpty()&&inputQueue.first().getMomentOfArrival()==counter)
             {
-                orderCounter = processingQueue.first().getOrderTime();
-                profit = profit + processingQueue.first().getOrderCost();
-                customersServed.add(processingQueue.dequeue());
+                processingQueue.enqueue(inputQueue.dequeue());
             }
 
-            counter++;
-            orderCounter--;
+
+			if(!processingQueue.isEmpty() && orderCounter <= 0)
+			{
+				orderCounter = processingQueue.first().getOrderTime();
+				profit = profit + processingQueue.first().getOrderCost();
+				customersServed.add(processingQueue.dequeue());
+			}
+
+
         }
 	}
 

@@ -18,17 +18,49 @@ public class MatApproach implements Approach
 		disCustomers = 0;
 		processingStack = new LLStack<>();
 		servedCustomers = new ArrayList<>();
-		this.inputQueue = inputQueue;
+        this.inputQueue = new SLLQueue<>();
+        for(int i =0; i < inputQueue.size(); i++)
+        {
+            this.inputQueue.enqueue(inputQueue.first().clone());
+            inputQueue.enqueue(inputQueue.dequeue());
+        }
 	}
 
 	@Override
 	public void run() 
 	{
-	    int counter = 1;
-	    int orderCounter = 0;
+	    int counter = 0;
+	    int orderCounter = 1;
 
 		while(!inputQueue.isEmpty() || !processingStack.isEmpty())
         {
+            counter++;
+            orderCounter--;
+
+            int currentLineSize = processingStack.size();
+            Stack<Customer> tempStack = new LLStack<>();
+
+            for(int i=0; i<currentLineSize; i++)
+            {
+                if(processingStack.top().getLineCounter() <= 0)
+                {
+                    processingStack.pop();
+                    disCustomers++;
+                }
+                else
+                {
+                    processingStack.top().setLineCounter(processingStack.top().getLineCounter()-1);
+                    tempStack.push(processingStack.pop());
+                }
+
+
+            }
+
+            while(!tempStack.isEmpty())
+            {
+                processingStack.push(tempStack.pop());
+            }
+
             while(!inputQueue.isEmpty() && inputQueue.first().getMomentOfArrival() == counter)
             {
                 processingStack.push(inputQueue.dequeue());
@@ -41,31 +73,6 @@ public class MatApproach implements Approach
                 servedCustomers.add(processingStack.pop());
             }
 
-            int currentLineSize = processingStack.size();
-            Stack<Customer> tempStack = new LLStack<>();
-
-            for(int i=0; i<currentLineSize; i++)
-            {
-                processingStack.top().setLineCounter(processingStack.top().getLineCounter()-1);
-                if(processingStack.top().getLineCounter() <= 0)
-                {
-                    processingStack.pop();
-                    disCustomers++;
-                }
-                else
-                {
-                    tempStack.push(processingStack.pop());
-                }
-            }
-
-            while(!tempStack.isEmpty())
-            {
-                processingStack.push(tempStack.pop());
-            }
-
-
-            counter++;
-            orderCounter--;
         }
 
 	}
@@ -102,7 +109,7 @@ public class MatApproach implements Approach
         this.processingStack = processingStack;
     }
 
-    public ArrayList<Customer> getServedCustomers() {
+    public ArrayList<Customer> getCustomersServed() {
         return servedCustomers;
     }
 
