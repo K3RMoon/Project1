@@ -16,7 +16,7 @@ public class main
     {
         Queue<Customer> inputQueue = new SLLQueue<>();
         try {
-            inputQueue = Reading.readFromFile("input2.csv");
+            inputQueue = Reading.readFromFile("input7.csv");
         }
         catch(FileNotFoundException e)
         {
@@ -45,7 +45,8 @@ public class main
             inputQueue.enqueue(inputQueue.dequeue());
         }
 
-        toPrint.add("Maximum profit possible: " + maxProfit);
+        Double profit = maxProfit;
+        toPrint.add("Maximum profit possible: " + profit.floatValue());
         toPrint.add("Maximum number of customers served possible: " + inputQueue.size());
         toPrint.add(pat + "");
         toPrint.add(mat + "");

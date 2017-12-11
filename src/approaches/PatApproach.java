@@ -114,6 +114,7 @@ public class PatApproach implements Approach
 	
 	public String toString()
 	{
-		return "\nPat's Approach Profit: $" + profit + "\nPat's approach number of dissapointed customers: " + disCustomers;
+		Double profitt = profit;
+		return "\nPat's Approach Profit: $" + profitt.floatValue() + "\nPat's approach number of dissapointed customers: " + disCustomers;
 	}
 }

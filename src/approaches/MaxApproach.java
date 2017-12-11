@@ -112,6 +112,8 @@ public class MaxApproach implements Approach
 
     public String toString()
     {
-        return  "\nMax's Approach Profit: $" + profit + "\nMax's approach number of dissapointed customers: " + disCustomers;
+        Double profitt = profit;
+
+        return  "\nMax's Approach Profit: $" + profitt.floatValue() + "\nMax's approach number of dissapointed customers: " + disCustomers;
     }
 }

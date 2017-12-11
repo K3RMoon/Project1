@@ -111,6 +111,7 @@ public class PacApproach implements Approach
 
     public String toString()
     {
-        return  "\nPac's Approach Profit: $" + profit + "\nPac's approach number of dissapointed customers: " + disCustomers;
+        Double profitt = profit;
+        return  "\nPac's Approach Profit: $" + profitt.floatValue() + "\nPac's approach number of dissapointed customers: " + disCustomers;
     }
 }

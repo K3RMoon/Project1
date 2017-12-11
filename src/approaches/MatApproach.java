@@ -74,6 +74,8 @@ public class MatApproach implements Approach
             }
 
         }
+        for(Customer c: servedCustomers)
+            System.out.println(c.getOrderCost());
 
 	}
 
@@ -119,6 +121,7 @@ public class MatApproach implements Approach
 
     public String toString()
     {
-        return "\nMat's Approach Profit: $" + profit + "\nMat's approach number of dissapointed customers: " + disCustomers;
+        Double profitt = profit;
+        return "\nMat's Approach Profit: $" + profitt.floatValue() + "\nMat's approach number of dissapointed customers: " + disCustomers;
     }
 }
